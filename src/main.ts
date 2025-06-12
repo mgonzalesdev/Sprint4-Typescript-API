@@ -1,24 +1,23 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { getJoke } from './joke.js';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const contentJoke = document.querySelector("#content-joke");
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// document.addEventListener('DOMContentLoaded', () => {
+
+// });
+
+
+
+async function nextJoke() {
+    try {
+        const data = await getJoke();
+        contentJoke.textContent = data.joke;
+        console.log(data.joke);
+    } catch (error) {
+        // console.error('Error al obtener chiste:', error);
+        contentJoke.innerHTML = `<p class="text-red-500">Error al cargar chiste ${error}</p>`;
+    }
+}
+nextJoke();
+const btn = document.getElementById('next-joke');
+btn?.addEventListener('click', nextJoke);

@@ -1,12 +1,6 @@
-import { getJoke } from './joke.js';
+import { getJoke } from './joke.ts';
 
 const contentJoke = document.querySelector("#content-joke");
-
-// document.addEventListener('DOMContentLoaded', () => {
-
-// });
-
-
 
 async function nextJoke() {
     try {
@@ -18,6 +12,8 @@ async function nextJoke() {
         contentJoke.innerHTML = `<p class="text-red-500">Error al cargar chiste ${error}</p>`;
     }
 }
+
 nextJoke();
+
 const btn = document.getElementById('next-joke');
 btn?.addEventListener('click', nextJoke);

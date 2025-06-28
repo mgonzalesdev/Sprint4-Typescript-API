@@ -14,7 +14,7 @@ const backgrounds: string[] = [
     "bg-[url('/public/blob_4.svg')]",
     "bg-[url('/public/blob_5.svg')]"];
 
-let current = 0;
+let current = -1;
 let isSaved: boolean = false;
 let joke: string = "";
 

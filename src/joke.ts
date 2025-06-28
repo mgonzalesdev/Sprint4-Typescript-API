@@ -1,20 +1,57 @@
-export { getJoke };
+export type Record = { joke: string; score: number, date: string };
+const reportAcudits: Record[] = [];
 
-async function getJoke() {
+export async function getJoke() {
     try {
-        const res = await fetch('https://icanhazdadjoke.com/', {
+        const resp = await fetch('https://icanhazdadjoke.com/', {
             headers: {
                 'Accept': 'application/json',
             }
         });
 
-        if (!res.ok) {
-            throw new Error(`Error ${res.status}: ${res.statusText}`);
-            
+        if (!resp.ok) {
+            throw new Error(`Error ${resp.status}: ${resp.statusText}`);
         }
-        const data = await res.json(); // data.joke contiene el texto del chiste, convierte la respuesta del servidor en un json, se colocaun await porque la funcion va ha tardar x tiempo
-        return data;
-    } catch (error) {        
-         console.error('Error al consultar la API:', error);
+        const data = await resp.json(); // data.joke contiene el texto del chiste, convierte la respuesta del servidor en un json, se colocaun await porque la funcion va ha tardar x tiempo
+        return data.joke;
+    } catch (error) {
+        console.error('Error al consultar la API: icanhazdadjoke', error);
+        return null;
     }
+}
+
+export async function getJokeOfficialJoke() {
+    try {
+        const resp = await fetch('https://official-joke-api.appspot.com/random_joke', {
+            headers: {
+                'Accept': 'application/json',
+            }
+        });
+        if (!resp.ok) {
+            throw new Error(`Error ${resp.status}: ${resp.statusText}`);
+
+        }
+        const data = await resp.json(); 
+        let joke = `- ${data.setup} <br>- ${data.punchline}`;       
+        return joke;
+    } catch (error) {
+        console.error('Error al consultar la API: Official Joke', error);
+        return null;
+    }
+}
+
+export function saveAcudits(record: Record): void {
+    reportAcudits.push(record);
+}
+
+export function deleteLastRecord(text: string): boolean {
+    if (reportAcudits[reportAcudits.length - 1].joke === text) {
+        reportAcudits.pop();
+        return true;
+    } else
+        return false;
+}
+
+export function showHistory(): Record[] {
+    return reportAcudits;
 }

@@ -6,26 +6,28 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" /> -->
+  <link href="https://cdn.jsdelivr.net/npm/weather-icons@1.3.2/css/weather-icons.min.css" rel="stylesheet">
 
   <title>Vite + TS</title>
 </head>
 
-<body>
-  <!-- <div id="app"></div> -->
-  <header>
-    <div id="weather" class="m-8"> </div>
+<body id="body" class="min-h-screen flex flex-col bg-center bg-no-repeat">
+  <header class="px-8 py-4">
+    <div class="flex items-center">
+      <i id="weatherIcon" class="wi text-blue-500 text-5xl mr-2"></i>
+      <div id="weather" class="text-2xl"> </div>
+    </div>
   </header>
-  <main>
-    <section class="bg-[url(/personas.jpg)] h-screen  bg-cover flex flex-col justify-center items-center">
-      <!-- <div class="flex flex-col justify-center items-center w-1/2 h-[50vh] rounded shadow m-auto"> -->
-      <div class="flex flex-col justify-center items-center w-1/2 p-4 rounded shadow m-auto bg-gray-50/80">
-        <h1 class="text-3xl font-bold underline">Ready to laugh?</h1>
-        <div id="content-joke" class="text-gray-800 p-4 "></div>
-        <div class="flex flex-row ">
-          <button name="terrible" id="1" value="1" class="record p-4 text-5xl">&#128542;</button>
-          <button name="acceptable" id="2" value="2" class="record p-4 text-5xl">&#128528;</button>
-          <button name="good" id="3" value="3" class="record p-4 text-5xl">&#129315;</button>
+  <main class="flex-1 flex">
+    <section id="contenido" class="flex flex-col items-center justify-center px-4 w-full">
+      <div class="flex flex-col items-center justify-center p-4 rounded">
+        <h1 class="text-3xl font-bold underline mb-4">Ready to laugh?</h1>
+        <div id="content-joke" class="text-gray-800 mb-4"></div>
+        <div class="flex justify-center w-full mb-4 text-5xl">
+          <button name="terrible" id="1" value="1" class="record p-2">&#128542;</button>
+          <button name="acceptable" id="2" value="2" class="record p-2">&#128528;</button>
+          <button name="good" id="3" value="3" class="record p-2">&#129315;</button>
         </div>
         <button id="next-joke"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">Next
@@ -33,7 +35,6 @@
       </div>
     </section>
   </main>
-  <footer></footer>
   <script type="module" src="/src/main.ts"></script>
 </body>
 

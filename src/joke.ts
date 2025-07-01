@@ -1,5 +1,5 @@
 export type Record = { joke: string; score: number, date: string };
-const reportAcudits: Record[] = [];
+const reportJoke: Record[] = [];
 
 export async function getJoke() {
     try {
@@ -31,8 +31,8 @@ export async function getJokeOfficialJoke() {
             throw new Error(`Error ${resp.status}: ${resp.statusText}`);
 
         }
-        const data = await resp.json(); 
-        let joke = `- ${data.setup} <br>- ${data.punchline}`;       
+        const data = await resp.json();
+        let joke = `- ${data.setup} <br>- ${data.punchline}`;
         return joke;
     } catch (error) {
         console.error('Error al consultar la API: Official Joke', error);
@@ -40,18 +40,20 @@ export async function getJokeOfficialJoke() {
     }
 }
 
-export function saveAcudits(record: Record): void {
-    reportAcudits.push(record);
+export function saveReportJoke(joke: string, score: number): void {
+    let currentDate = new Date().toISOString();
+    const newRecord: Record = { joke: joke, score: score, date: currentDate };
+    reportJoke.push(newRecord);
 }
 
 export function deleteLastRecord(text: string): boolean {
-    if (reportAcudits[reportAcudits.length - 1].joke === text) {
-        reportAcudits.pop();
+    if (reportJoke[reportJoke.length - 1].joke === text) {
+        reportJoke.pop();
         return true;
     } else
         return false;
 }
 
 export function showHistory(): Record[] {
-    return reportAcudits;
+    return reportJoke;
 }

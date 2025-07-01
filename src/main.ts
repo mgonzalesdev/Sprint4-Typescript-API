@@ -1,7 +1,5 @@
-import { getJoke, getJokeOfficialJoke, saveAcudits, deleteLastRecord, showHistory } from './joke.ts';
+import { getJoke, getJokeOfficialJoke, saveReportJoke, deleteLastRecord, showHistory } from './joke.ts';
 import { getForecast } from './weatherForecast.ts';
-
-import type { Record } from './joke.ts';
 
 const contentJoke = document.querySelector("#content-joke") as HTMLElement;
 const weather = document.querySelector("#weather") as HTMLElement;
@@ -15,7 +13,7 @@ const backgrounds: string[] = [
     "bg-[url('/public/blob_5.svg')]"];
 
 let current = -1;
-let isSaved: boolean = false;
+let savedCurrentJoke: boolean = false;
 let joke: string = "";
 
 async function getRandomApi(): Promise<string> {
@@ -28,13 +26,12 @@ async function nextJoke(): Promise<void> {
         setBackground();
         joke = await getRandomApi();
         if (joke) {
-            isSaved = false;
+            savedCurrentJoke = false;
             contentJoke.innerHTML = joke;
         } else
             throw new Error(`Error al obtener el chiste.`);
         console.log(joke);
     } catch (error) {
-        // console.error('Error al obtener chiste:', error);
         contentJoke.innerHTML = `<p class="text-red-500">Error al cargar chiste ${error}</p>`;
     }
 }
@@ -58,15 +55,16 @@ async function getWeather(): Promise<void> {
 function saveScore(event: MouseEvent): void {
     const target = event.currentTarget as HTMLButtonElement;
     let score = parseInt(target.value);
-    let currentDate = new Date().toISOString();
-    const newRecord: Record = { joke: joke, score: score, date: currentDate };
-    if (isSaved === false) {
-        saveAcudits(newRecord);
-        isSaved = true;
+
+    if (savedCurrentJoke === false) {
+        saveReportJoke(joke, score);
+        savedCurrentJoke = true;
         console.log(showHistory());
     } else {
         if (deleteLastRecord(joke))
-            saveAcudits(newRecord);
+            saveReportJoke(joke, score);
+        else
+            console.error(`El chiste: ${joke}, no esta guardado.`);
         console.log(showHistory());
     }
 };
@@ -77,7 +75,7 @@ function initApp(): void {
 
     document.getElementById('next-joke')?.addEventListener('click', nextJoke);
 
-    document.querySelectorAll('.record').forEach(btn =>
+    document.querySelectorAll<HTMLButtonElement>('.record').forEach(btn =>
         btn.addEventListener("click", saveScore)
     );
     document.body.classList.add(backgrounds[current]);
@@ -118,7 +116,7 @@ const weatherCodeMap: Icon = {
 };
 
 function setBackground(): void {
-    document.body.classList.remove(backgrounds[current]); 
+    document.body.classList.remove(backgrounds[current]);
     (current === backgrounds.length - 1) ? current = 0 : current++;
     document.body.classList.add(backgrounds[current]);
 }

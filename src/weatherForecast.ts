@@ -12,8 +12,6 @@ export async function getForecast() {
         const data = await response.json();
         let dataForecast = {
             temperature: data.current_weather.temperature + " " + data.current_weather_units.temperature,
-            date: data.current_weather.time,
-            windspeed: data.current_weather.windspeed + " " + data.current_weather_units.windspeed,
             icon: data.current_weather.weathercode
         }
         return dataForecast;
